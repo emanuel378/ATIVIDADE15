@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz de Sociologia e Trabalho</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+        }
+        .question {
+            font-weight: bold;
+        }
+        .options {
+            margin-bottom: 20px;
+        }
+        .option {
+            display: block;
+            margin: 5px 0;
+        }
+        .result {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Quiz de Sociologia e Trabalho</h1>
+
+    <div id="quiz-container">
+        <div id="question" class="question"></div>
+        <div id="options" class="options"></div>
+        <button onclick="nextQuestion()">Enviar Resposta</button>
+    </div>
+
+    <div id="result" class="result"></div>
+
+    <script>
+        const questions = [
+            {
+                question: "Quem é considerado o pai da sociologia?",
+                options: ["Auguste Comte", "Karl Marx", "Max Weber", "Emile Durkheim"],
+                answer: "Auguste Comte"
+            },
+            {
+                question: "Qual é o conceito central em Marx sobre a divisão da sociedade?",
+                options: ["Classe social", "Capitalismo", "Socialismo", "Proletariado"],
+                answer: "Classe social"
+            },
+            {
+                question: "Qual autor é conhecido por seu trabalho sobre a ética protestante e o espírito do capitalismo?",
+                options: ["Max Weber", "Emile Durkheim", "Karl Marx", "Auguste Comte"],
+                answer: "Max Weber"
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+
+        function loadQuestion() {
+            const questionData = questions[currentQuestionIndex];
+            document.getElementById('question').textContent = questionData.question;
+
+            const optionsContainer = document.getElementById('options');
+            optionsContainer.innerHTML = '';
+            questionData.options.forEach(option => {
+                const optionElement = document.createElement('input');
+                optionElement.type = 'radio';
+                optionElement.name = 'option';
+                optionElement.value = option;
+                optionElement.id = option;
+
+                const labelElement = document.createElement('label');
+                labelElement.htmlFor = option;
+                labelElement.textContent = option;
+
+                optionsContainer.appendChild(optionElement);
+                optionsContainer.appendChild(labelElement);
+                optionsContainer.appendChild(document.createElement('br'));
+            });
+        }
+
+        function nextQuestion() {
+            const selectedOption = document.querySelector('input[name="option"]:checked');
+            if (selectedOption) {
+                const answer = selectedOption.value;
+                if (answer === questions[currentQuestionIndex].answer) {
+                    score++;
+                }
+                currentQuestionIndex++;
+                if (currentQuestionIndex < questions.length) {
+                    loadQuestion();
+                } else {
+                    document.getElementById('quiz-container').style.display = 'none';
+                    document.getElementById('result').textContent = `Você acertou ${score} de ${questions.length} perguntas.`;
+                }
+            } else {
+                alert('Por favor, selecione uma opção.');
+            }
+        }
+
+        loadQuestion();
+    </script>
+
+</body>
+</html>
